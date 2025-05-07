@@ -1,7 +1,7 @@
 #!/bin/bash
-# Rohan Verma, testing the auto-update
+# Rohan Verma
 
-SCRIPT_VERSION="v1.1.7"
+SCRIPT_VERSION="v1.1.8"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
@@ -53,11 +53,12 @@ check_for_update_and_apply() {
       rm -f "$0.tmp"
     fi
   else
-    echo "✅ You are already using the latest version ($SCRIPT_VERSION)."
+    echo "✅ Already latest version! ($SCRIPT_VERSION)"
   fi
 }
-
+echo "-------------------------------------------"
 check_for_update_and_apply
+echo "-------------------------------------------"
 
 # Brew install
 if ! command -v brew >/dev/null 2>&1; then
