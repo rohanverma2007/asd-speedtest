@@ -16,10 +16,13 @@ bash speedtest.sh
 ## Expected Output
 ```
 -------------------------------------------
+🔍 Checking for updates...
+✅ You are already using the latest version (v1.1.7).
+-------------------------------------------
 [✓] Running Speed Test...
-[✓] Downloading test_file.txt...
-[✓] Uploading test_file.txt...
-[✓] Deleting test_file.txt from Dropbox...
+[✓] Downloading Test File.txt...
+[✓] Uploading Test File.txt...
+[✓] Deleting Test File.txt from Dropbox...
 [✓] Downloading Test Image.jpg...
 [✓] Uploading Test Image.jpg...
 [✓] Deleting Test Image.jpg from Dropbox...
@@ -27,17 +30,17 @@ bash speedtest.sh
 [✓] Uploading Test Video.mp4...
 [✓] Deleting Test Video.mp4 from Dropbox...
 -------------------------------------------
-📥Text File Download:  8.17 seconds
-📤Text File Upload:    14.03 seconds
+📥Text File Download:  11.51 seconds
+📤Text File Upload:    10.33 seconds
 -------------------------------------------
-📥Video File Download: 20.81 seconds
-📤Video File Upload:   20.92 seconds
+📥Video File Download: 19.71 seconds
+📤Video File Upload:   19.34 seconds
 -------------------------------------------
-📥Image File Download: 7.58 seconds
-📤Image File Upload:   5.92 seconds
+📥Image File Download: 7.45 seconds
+📤Image File Upload:   7.85 seconds
 -------------------------------------------
-🗿Latency/Ping:        6.619 ms
-📥Download Speed:      801.07 Mbps
-📤Upload Speed:        319.87 Mbps
+🗿Latency/Ping:        5.966 ms
+📥Download Speed:      703.59 Mbps
+📤Upload Speed:        318.37 Mbps
 -------------------------------------------
 ```
