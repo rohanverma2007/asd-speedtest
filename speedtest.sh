@@ -6,10 +6,29 @@ SCRIPT_VERSION="v1.0.0"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
-check_for_update_and_apply() {
-  echo "🔍 Checking for updates..."
+spinner() {
+  local pid=$!
+  local msg=$1
+  local spinstr='|/-\\'
+  local delay=0.1
+  local i=0
 
-  latest_version=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" | jq -r '.tag_name')
+  tput civis 2>/dev/null  # Hide cursor
+  while kill -0 $pid 2>/dev/null; do
+    printf "\r[%c] %s" "${spinstr:$i:1}" "$msg"
+    i=$(( (i + 1) % 4 ))
+    sleep $delay
+  done
+  wait $pid
+  printf "\r[✓] %s\n" "$msg"
+  tput cnorm 2>/dev/null  # Show cursor
+}
+
+check_for_update_and_apply() {
+
+  {
+    latest_version=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" | jq -r '.tag_name')
+  } & spinner "Checking for updates..."
   
   if [[ "$latest_version" != "$SCRIPT_VERSION" && "$latest_version" != "null" ]]; then
     echo "📢 Update available: $latest_version (current: $SCRIPT_VERSION)"
@@ -23,8 +42,11 @@ check_for_update_and_apply() {
       return
     fi
 
-    echo "⬇️ Downloading new version..."
-    curl -sL "$download_url" -o "$0.tmp"
+    echo "Downloading new version..."
+	{
+	  curl -sL "$download_url" -o "$0.tmp"
+	} & spinner "Downloading update..."
+
 
     if [[ -s "$0.tmp" ]]; then
       mv "$0.tmp" "$0"
@@ -60,11 +82,10 @@ if ! brew list speedtest-cli >/dev/null 2>&1; then
 	brew install jq
 fi
 
-# Run speedtest and capture JSON output
-echo "Running Speed Test..."
-
-# Run speedtest and capture JSON output
-output=$(speedtest --server-id=17336 --format=json)
+tmpfile=$(mktemp)
+(speedtest --server-id=17336 --format=json > "$tmpfile") & spinner "Running Speed Test..."
+output=$(<"$tmpfile")
+rm "$tmpfile"
 
 # Parse values using jq (Ookla format)
 idle_latency=$(echo "$output" | grep -o '"latency":[^,]*' | head -n1 | cut -d':' -f2)
