@@ -11,7 +11,7 @@ Speedtest Script for ASD Network (or any network!)
 7. Head to usage if you want to understand how to gather distance
 
 ### Video Instructions
-[![Video Instructions](https://images.business.com/app/uploads/2022/03/23023843/shutterstock_Atstock-Productions-3.jpg)](https://www.youtube.com/watch?v=KpmUYaWikVg)
+<video src="https://github.com/rohanverma2007/asd-speedtest/raw/main/Instructions.mp4" controls style="max-width: 100%;"></video>
 
 ## Usage
 Run the command with:
