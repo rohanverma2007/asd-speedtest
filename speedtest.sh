@@ -1,7 +1,7 @@
 #!/bin/bash
 # Rohan Verma
 
-SCRIPT_VERSION="v1.2.1"
+SCRIPT_VERSION="v1.3.0"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
@@ -24,7 +24,7 @@ spinner() {
 }
 
 check_for_update_and_apply() {
-  echo "🔍 Checking for updates..."
+  echo "[✓] Checking for updates..."
 
   latest_version=$($JQ -r '.tag_name' < <(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest"))
 
@@ -44,14 +44,14 @@ check_for_update_and_apply() {
     if [[ -s "$0.tmp" ]]; then
       mv "$0.tmp" "$0"
       chmod +x "$0"
-      echo "✅ Updated to $latest_version. Please re-run the script."
+      echo "[✓] Updated to $latest_version. Please re-run the script."
       exit 0
     else
       echo "❌ Download failed or empty file."
       rm -f "$0.tmp"
     fi
   else
-    echo "✅ Already latest version! ($SCRIPT_VERSION)"
+    echo "[✓] Already latest version! ($SCRIPT_VERSION)"
   fi
 }
 
@@ -77,9 +77,9 @@ else
   SPEEDTEST="speedtest"
 fi
 
-echo "-------------------------------------------"
+echo "----------------------------------------------------------------------"
 check_for_update_and_apply
-echo "-------------------------------------------"
+echo "----------------------------------------------------------------------"
 
 tmpfile=$(mktemp)
 ($SPEEDTEST --accept-license --accept-gdpr --server-id=17336 --format=json > "$tmpfile") & spinner "Running Speed Test..."
@@ -168,17 +168,46 @@ for LOCAL_NAME in "${FILES_KEYS[@]}"; do
 
 done
 
-echo "-------------------------------------------"
-echo "📥Text File Download:  $txt_download seconds"
-echo "📤Text File Upload:    $txt_upload seconds"
-echo "-------------------------------------------"
-echo "📥Video File Download: $vid_download seconds"
-echo "📤Video File Upload:   $vid_upload seconds"
-echo "-------------------------------------------"
-echo "📥Image File Download: $img_download seconds"
-echo "📤Image File Upload:   $img_upload seconds"
-echo "-------------------------------------------"
-echo "🗿Latency/Ping:        $idle_latency ms"
-echo "📥Download Speed:      $download_mbps Mbps"
-echo "📤Upload Speed:        $upload_mbps Mbps"
-echo "-------------------------------------------"
+echo "----------------------------------------------------------------------"
+echo "📥 Text File Download:  $txt_download seconds"
+echo "📤 Text File Upload:    $txt_upload seconds"
+echo "----------------------------------------------------------------------"
+echo "📥 Video File Download: $vid_download seconds"
+echo "📤 Video File Upload:   $vid_upload seconds"
+echo "----------------------------------------------------------------------"
+echo "📥 Image File Download: $img_download seconds"
+echo "📤 Image File Upload:   $img_upload seconds"
+echo "----------------------------------------------------------------------"
+echo "🗿 Latency/Ping:        $idle_latency ms"
+echo "📥 Download Speed:      $download_mbps Mbps"
+echo "📤 Upload Speed:        $upload_mbps Mbps"
+echo "----------------------------------------------------------------------"
+read -p "> Enter your current ASD Room Number/Location on Campus: " location
+read -p "> Any notes? Leave blank if nothing: " notes
+read -p "> Distance to router in meters (estimated): " distance
+echo "----------------------------------------------------------------------"
+
+{
+  wifi_name=$(system_profiler SPAirPortDataType 2>/dev/null | awk '/Current Network Information:/ {getline; gsub(":", "", $1); print $1; exit}')
+  laptop_owner=$(scutil --get ComputerName)
+} & spinner "Gathering device info..."
+
+{
+  curl -s -X POST https://docs.google.com/forms/d/e/1FAIpQLSdJqVtrNwXMySfBWkkWBK13TH9qMH_hhS0VqcmivjTj9k64ZQ/formResponse \
+    -d "entry.366340186=$laptop_owner" \
+    -d "entry.163968548=$wifi_name" \
+    -d "entry.1417593520=$location" \
+    -d "entry.1988809452=$distance" \
+    -d "entry.920602030=$download_mbps" \
+    -d "entry.1199007316=$upload_mbps" \
+    -d "entry.1831664958=$idle_latency" \
+    -d "entry.332463093=$txt_download" \
+    -d "entry.261161766=$txt_upload" \
+    -d "entry.1579796133=$img_download" \
+    -d "entry.911938217=$img_upload" \
+    -d "entry.489745409=$vid_download" \
+    -d "entry.1329736496=$vid_upload" \
+    -d "entry.1500120204=$notes" > /dev/null
+} & spinner "Submitting data to Spreadsheet..."
+
+echo "----------------------------------------------------------------------"
