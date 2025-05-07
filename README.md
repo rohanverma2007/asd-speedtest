@@ -3,15 +3,19 @@ Speedtest Script for ASD Network
 
 ## Installation
 1. Click on releases on the right
-2. Download latest speedtest.sh
-3. Open Terminal Window
-4. You must cd into directory where the speedtest.sh is installed
-5. Run command mentioned in **usage**
-
+2. Download the **latest** ASD_Speedtest.zip
+3. Unzip the file ASD_Speedtest.zip
+4. Open Terminal Window
+5. Run ```cd Downloads/ASD_Speedtest``` (if it is downloaded in your "Downloads" directory, otherwise cd is used to change directories, so to change directory to download you do cd Download, for documents cd Documents)
+6. Simply run the command ```bash speedtest.sh```
+7. Head to usage if you want to understand how to gather distance
+   
 ## Usage
 ```
 bash speedtest.sh
 ```
+- For finding distance, please use the iPhone Measure app (if not downloaded, download it now!). If you are using Android, download the "Measure Tools: AR Ruler Camera" app and measure with that if your Phone has LiDar capabilities. Otherwise, just __try to eyeball the distance!__
+- Enter in the spreadsheet all of the data given as shown in the spreadsheet
 
 ## Expected Output
 ```
