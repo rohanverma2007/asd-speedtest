@@ -1,8 +1,7 @@
 #!/bin/bash
+# Rohan Verma
 
-# Rohan was here
-
-SCRIPT_VERSION="v1.0.0"
+SCRIPT_VERSION="v1.1.5"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
@@ -42,7 +41,6 @@ check_for_update_and_apply() {
       return
     fi
 
-    echo "Downloading new version..."
 	{
 	  curl -sL "$download_url" -o "$0.tmp"
 	} & spinner "Downloading update..."
@@ -61,8 +59,6 @@ check_for_update_and_apply() {
     echo "✅ You are already using the latest version ($SCRIPT_VERSION)."
   fi
 }
-
-ACCESS_TOKEN="sl.u.AFuMG5c46fQLljGyiXsVb9CPOrIldEJJ_eLIYSLfDhQRdqMiCr4qdo1ws5OkzfqwO_5-ZaWdYOOmyKmCB1uBZZd0583aIuSzBMRpWCqXdT1cCdhVywCgKuMRXabjK8Z0ZsIwYEhVZL-qSv2QgmdpS7Oi_xdePOT4bTyvhWzCOo7GTZNsBiZVTWe8TykO2iIK2e7U9-XJyU8VgBVgEX3B7IJx7PaDg3F2G-bJ34QGUXw1m8Aupmja9RdlVvhwYrVamg540N9Aodoahq5jdHFNfU2pRV9pdX7iwk6d7q5rEa2jh1DHd0TkB2Gat0L_AhSpSBBO99OkA3DhOx9qAQsZHK-eBXvW0Bv-F-RvWcxWBJvjyApUk-R99WAPSYRhlfTQyF12XEXpkEMmqZri5gsjYD0ym-Qa-a3oKodU9RaEMGTAcvHciSHDlCLrjX4x7zCOtChFUtGqu-PZGdl9iRhJ5kpLncrOVmP92qOxVmUEog9xxTunEsyEGiH67lIjkFGPxmgr0zbDSyEVHuwB65q01IsowLjyCUWk-LK7zTe2degFrYw1OGgKV__4AVWgH0GbFm71Iv9dLfTYuEYCTbuaOfWTgVJvKS39oLwQ2SnLYbsFJDFSpK01NnKgDSwKPHok5sOvRJTTDmOHzBLJmuBLEdXFJTtJnUq9ZkABa0CPajVBYujJ8apkCrpO_mwP-p9EwStDst9cUU7lc34NcI69XcTCE91nbbqt52Hugd4Mqpz1eo99gm2Pxhk8Gv4xNSEzLKZGcWFBZBQG3ZN4vX0yt-XiBojf_T6YLXSosGfW6Jqvtq6N112DHuqMEOd4HNAMQa7hTnvBkwq5PiApiMjMDo8tsPscYqI87jIYL0bVgFmBphOstRCQLj1MXRwEIixIehyldtR3TJO2kf3GNktzPbON3dYAoQKO_X7MR1Tcb7-Rl6AdXV5YdaTT3BUt4N6_-0SPaw39tkj7lOCZgqT22NAlAegWVMN2URsGfE0CYnnDksafA2ucPHyo78dvIUarHhDlEvjCRsGVeLwncZTBc0FklElXVfHUXrprzKTxvtFPE5uX1ysDIhOr7X28ex4bnuPWsIzTpiR15tTdmR1KGpzKpDvG97ytGC7jvSEfRjLdCV-2uh2-r1YN_ZUqvVOP39bVTnJE0ryecGl-VaL8XEIK7fFOLKZ0daItMEQ-aJE-Rm-XDBPZWE0kbNvLOZakzEbnX-FUSEbJ_PKMbRSa014WZwwGMJiEo3NPwjhhSkzgOYIBuCBUPzJ6dyOLGE7zK3fs4U81o2zQ67mH8JEDW7Vexc8ZU1iXdoJxIp-ks1DsG_JwhOiMXmWivOPr4OVlpoY_SdWdyyYislkkvxy7ISrvLLqSWVm08Zy09VGvWUdh4tetRbS2dsvs8514earXTCJjDhiy10-nupfrjWD9KxFeimIX3kSsY_BufpkfDNQkiw"
 
 check_for_update_and_apply
 
@@ -96,14 +92,8 @@ upload_bps=$(echo "$output" | jq '.upload.bandwidth')
 download_mbps=$(awk "BEGIN {printf \"%.2f\", $download_bps * 8 / 1000000}")
 upload_mbps=$(awk "BEGIN {printf \"%.2f\", $upload_bps * 8 / 1000000}")
 
-# Output the results
-#echo "Idle Latency: $idle_latency ms"
-#echo "Download    : $download_mbps Mbps"
-#echo "Upload:      $upload_mbps Mbps"
-
-# Define file sets
 declare -A FILES=(
-  ["testcomplete.txt"]="test_file.txt"
+  ["testcomplete.txt"]="Test File.txt"
   ["testcomplete.mp4"]="Test Video.mp4"
   ["testcomplete.jpg"]="Test Image.jpg"
 )
@@ -116,40 +106,44 @@ declare -A URLS=(
 
 
 for LOCAL_NAME in "${!FILES[@]}"; do
+  ACCESS_TOKEN="sl.u.AFukczMxnAFibTJeNCgG4tUWAoLSEgW2FzPtBBintHXAM-zYRD3Cb9VZG8BxRT027bzHSt1RgWC03dgpFaCm10CiAgihUnK6EfTiJwLMvv4O-Z4SyE90P7kMql_J2bCekIKOHuKqukvfgCXSvHd6V6tSlZbu3DXoELlmztMnNC691Vi-6OZlcIkW_4Oc0vAznkLEHSJSUB5K_cYDNj-k-YmT-6lNKAuZjBZPECemPUZJXo00vAlomywLycOKcHK1PdePHltt34Hk_Dt6QHCo--s_-oyGACNM0vIMJrOdU8eSvjJNOO4Xa_k9MT9LaZqk4DoP8WLMV8uQjlllAiBc8VKGkhRTt0RKIoKwSFogPZZYdJ6QJEJeUZNCIQYev8YuM_cLT1terb5EHTHWA__BeLXv_xxVYudiJS60lDZWCkE5a8cI9dyFBXr9xTaz7_3DZ3oaNOtd1fDomqUXOr-VBgeCe-9V6HUC_sWgZkP1pPmvX4_RvXa8fnVMUuXAgclnUrhi9wj8pzmmclrzxaJYSIn1tnIMg5JYU9_6UzUoSyJqUOEXNSo8VJ-7R32Oe3yopYCDMxS7dwxtyEltJFyqYXK407Fx5qEZWhHqdYVSmP0s0vgZwt1JMCWXaHtNmaaiV1MmSx3oweDMWxIR2Ax368oVmb9HTQXoIvSYIw86aMn3vFXykq2YjoMheiOqs10iKWnNa5ZqRTCzH77vNxhMZNMXWZCzEv07yXSVutAZkfv9_u2frntuRAom4_OJUg0yqlIUbhfPBJj73lujFYsR31_dsBN5-TucRDvlitS5oYrMTb_i-0NdsuD5-UYbNhixM4_1dHXSdb4dn1kVl3KglchQsFI6Dc6JAcgJi9phUpqhlE3IlRP5hKoFy9lSruoF3peiFKlIUxveL-ktlKffg31YWFOnQ9joUqcsNeUKt11lgUsWqPafbYpCUfx6dKx_TTBLSRgEfSYF3M71WdvnlMGHGPm430vQUdAjwD3mNjIkwGtN12evc3zj8Cgsk-pK9dfbYf8R0NeBelXMLG9n5cq-ECLDgS3VkqRCGiHt7_YqKBqHKQj9ZCji8GHRmEHJfXGRavj7WaUGbS8giZhO9tfMC_-Kcy4yST55TfjVKifbC6RjkLOkraDNbPdc6eNImx5TYkvO2MtcT3tzYKzU8h13HZyGKNlXg4UQ1UU2YIpUoZXJJa4A6XBtp5SI_Pi7MnUqA0qvAnviJ7McKyF342Uds9c0WG_LX3VhUOm65Pwy6yC7Y2734wsEEIXZwmoIxhgnBDU0rPA8u-pEY_agVXZOsqLv9DXB2VLd6Z6xJFDV0AtIuZeXGQvXnwFjO0ObDYarsmdqyFa-6YcRWX2hioZIvFFQgrDPxOAcHp7udR9nSDBNxY1LOVqJoz1voa4dGFOCdovE_wp1ah7uTOQqdVrcEg4tKbIHov_B9ABX85vhUw"
+  RANDOM_ID=$(uuidgen | cut -c1-8)
+  UNIQUE_DROPBOX_NAME="${DROPBOX_NAME%.*}_$RANDOM_ID.${DROPBOX_NAME##*.}"
+
   DROPBOX_NAME="${FILES[$LOCAL_NAME]}"
   DOWNLOAD_URL="${URLS[$LOCAL_NAME]}"
 
-  echo "Downloading $DROPBOX_NAME..."
   start=$(date +%s.%N)
-  curl -s -L -o "$LOCAL_NAME" "$DOWNLOAD_URL"
+  {
+    curl -s -L -o "$LOCAL_NAME" "$DOWNLOAD_URL"
+  } & spinner "Downloading $DROPBOX_NAME..."
   end=$(date +%s.%N)
   elapsed=$(echo "$end - $start" | bc)
   download=$(printf "%.2f" "$elapsed")
-  #echo "Download took $download seconds"
-
-  echo "Uploading $DROPBOX_NAME..."
   start=$(date +%s.%N)
 
-  curl -s -X POST https://content.dropboxapi.com/2/files/upload \
-    --header "Authorization: Bearer $ACCESS_TOKEN" \
-    --header "Dropbox-API-Arg: {\"path\": \"/$DROPBOX_NAME\", \"mode\": \"overwrite\", \"autorename\": false}" \
-    --header "Content-Type: application/octet-stream" \
-    --data-binary @"$LOCAL_NAME" > /dev/null
+  {
+    curl -s -X POST https://content.dropboxapi.com/2/files/upload \
+      --header "Authorization: Bearer $ACCESS_TOKEN" \
+      --header "Dropbox-API-Arg: {\"path\": \"/$UNIQUE_DROPBOX_NAME\", \"mode\": \"overwrite\", \"autorename\": false}" \
+      --header "Content-Type: application/octet-stream" \
+      --data-binary @"$LOCAL_NAME" > /dev/null
+  } & spinner "Uploading $DROPBOX_NAME..."
 
   end=$(date +%s.%N)
   elapsed=$(echo "$end - $start" | bc)
   upload=$(printf "%.2f" "$elapsed")
-  #echo "Upload took $upload seconds"
 
-  #echo "Deleting $DROPBOX_NAME from Dropbox and Computer..."
-  curl -s -X POST https://api.dropboxapi.com/2/files/delete_v2 \
-    --header "Authorization: Bearer $ACCESS_TOKEN" \
-    --header "Content-Type: application/json" \
-    --data "{\"path\": \"/$DROPBOX_NAME\"}" > /dev/null
+  {
+    curl -s -X POST https://api.dropboxapi.com/2/files/delete_v2 \
+      --header "Authorization: Bearer $ACCESS_TOKEN" \
+      --header "Content-Type: application/json" \
+      --data "{\"path\": \"/$UNIQUE_DROPBOX_NAME\"}" > /dev/null
+  } & spinner "Deleting $DROPBOX_NAME from Dropbox..."
 
   rm -f "$LOCAL_NAME"
 
-	if [[ "$DROPBOX_NAME" == "test_file.txt" ]]; then
+	if [[ "$DROPBOX_NAME" == "Test File.txt" ]]; then
 	  txt_download="$download"
 	  txt_upload="$upload"
 	fi
@@ -163,27 +157,6 @@ for LOCAL_NAME in "${!FILES[@]}"; do
 	  img_upload="$upload"
 	fi
 done
-
-run_with_spinner() {
-  local cmd="$*"
-  local spinstr='|/-\\'
-  local delay=0.1
-  local i=0
-
-  eval "$cmd" &
-  local pid=$!
-
-  while kill -0 $pid 2>/dev/null; do
-    printf "\r[%c] Working..." "${spinstr:$i:1}"
-    i=$(( (i + 1) % 4 ))
-    sleep $delay
-  done
-
-  wait $pid
-  printf "\r[✓] Done.       \n"
-}
-
-echo "Deleting all files..."
 
 echo "-------------------------------------------"
 echo "📥Text File Download:  $txt_download seconds"
