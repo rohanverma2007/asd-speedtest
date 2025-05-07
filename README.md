@@ -11,6 +11,7 @@ Speedtest Script for ASD Network
 7. Head to usage if you want to understand how to gather distance
    
 ## Usage
+Run the command with:
 ```
 bash speedtest.sh
 ```
