@@ -2,7 +2,11 @@
 Speedtest Script for ASD Network
 
 ## Installation
-Go to releases on the right and cd into the directory where the file is installed
+1. Click on releases on the right
+2. Download latest speedtest.sh
+3. Open Terminal Window
+4. You must cd into directory where the speedtest.sh is installed
+5. Run command mentioned in **usage**
 
 ## Usage
 ```
