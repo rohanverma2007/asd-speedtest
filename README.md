@@ -10,6 +10,8 @@ Speedtest Script for ASD Network (or any network!)
 6. Simply run the command ```bash speedtest.sh```
 7. Head to usage if you want to understand how to gather distance
 
+### Video Instructions
+[![Video Instructions](https://images.business.com/app/uploads/2022/03/23023843/shutterstock_Atstock-Productions-3.jpg)](https://www.youtube.com/watch?v=KpmUYaWikVg)
 
 ## Usage
 Run the command with:
