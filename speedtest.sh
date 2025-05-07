@@ -1,7 +1,7 @@
 #!/bin/bash
-# Rohan Verma
+# Rohan Verma, testing the auto-update
 
-SCRIPT_VERSION="v1.1.6"
+SCRIPT_VERSION="v1.1.7"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
