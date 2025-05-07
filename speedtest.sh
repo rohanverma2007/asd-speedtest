@@ -1,7 +1,7 @@
 #!/bin/bash
 # Rohan Verma
 
-SCRIPT_VERSION="v1.3.0"
+SCRIPT_VERSION="v1.3.1"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
@@ -55,14 +55,14 @@ check_for_update_and_apply() {
   fi
 }
 
-
-# Use bundled jq and speedtest if system versions are missing
 for bin in ./bin/jq ./bin/speedtest; do
   if [[ -f "$bin" ]]; then
     chmod +x "$bin"
     xattr -d com.apple.quarantine "$bin" 2>/dev/null
   fi
+
 done
+
 if ! command -v jq >/dev/null 2>&1; then
   chmod +x ./bin/jq 2>/dev/null
   JQ="./bin/jq"
@@ -117,7 +117,7 @@ get_url() {
 }
 
 for LOCAL_NAME in "${FILES_KEYS[@]}"; do
-  ACCESS_TOKEN="sl.u.AFukczMxnAFibTJeNCgG4tUWAoLSEgW2FzPtBBintHXAM-zYRD3Cb9VZG8BxRT027bzHSt1RgWC03dgpFaCm10CiAgihUnK6EfTiJwLMvv4O-Z4SyE90P7kMql_J2bCekIKOHuKqukvfgCXSvHd6V6tSlZbu3DXoELlmztMnNC691Vi-6OZlcIkW_4Oc0vAznkLEHSJSUB5K_cYDNj-k-YmT-6lNKAuZjBZPECemPUZJXo00vAlomywLycOKcHK1PdePHltt34Hk_Dt6QHCo--s_-oyGACNM0vIMJrOdU8eSvjJNOO4Xa_k9MT9LaZqk4DoP8WLMV8uQjlllAiBc8VKGkhRTt0RKIoKwSFogPZZYdJ6QJEJeUZNCIQYev8YuM_cLT1terb5EHTHWA__BeLXv_xxVYudiJS60lDZWCkE5a8cI9dyFBXr9xTaz7_3DZ3oaNOtd1fDomqUXOr-VBgeCe-9V6HUC_sWgZkP1pPmvX4_RvXa8fnVMUuXAgclnUrhi9wj8pzmmclrzxaJYSIn1tnIMg5JYU9_6UzUoSyJqUOEXNSo8VJ-7R32Oe3yopYCDMxS7dwxtyEltJFyqYXK407Fx5qEZWhHqdYVSmP0s0vgZwt1JMCWXaHtNmaaiV1MmSx3oweDMWxIR2Ax368oVmb9HTQXoIvSYIw86aMn3vFXykq2YjoMheiOqs10iKWnNa5ZqRTCzH77vNxhMZNMXWZCzEv07yXSVutAZkfv9_u2frntuRAom4_OJUg0yqlIUbhfPBJj73lujFYsR31_dsBN5-TucRDvlitS5oYrMTb_i-0NdsuD5-UYbNhixM4_1dHXSdb4dn1kVl3KglchQsFI6Dc6JAcgJi9phUpqhlE3IlRP5hKoFy9lSruoF3peiFKlIUxveL-ktlKffg31YWFOnQ9joUqcsNeUKt11lgUsWqPafbYpCUfx6dKx_TTBLSRgEfSYF3M71WdvnlMGHGPm430vQUdAjwD3mNjIkwGtN12evc3zj8Cgsk-pK9dfbYf8R0NeBelXMLG9n5cq-ECLDgS3VkqRCGiHt7_YqKBqHKQj9ZCji8GHRmEHJfXGRavj7WaUGbS8giZhO9tfMC_-Kcy4yST55TfjVKifbC6RjkLOkraDNbPdc6eNImx5TYkvO2MtcT3tzYKzU8h13HZyGKNlXg4UQ1UU2YIpUoZXJJa4A6XBtp5SI_Pi7MnUqA0qvAnviJ7McKyF342Uds9c0WG_LX3VhUOm65Pwy6yC7Y2734wsEEIXZwmoIxhgnBDU0rPA8u-pEY_agVXZOsqLv9DXB2VLd6Z6xJFDV0AtIuZeXGQvXnwFjO0ObDYarsmdqyFa-6YcRWX2hioZIvFFQgrDPxOAcHp7udR9nSDBNxY1LOVqJoz1voa4dGFOCdovE_wp1ah7uTOQqdVrcEg4tKbIHov_B9ABX85vhUw"
+  ACCESS_TOKEN="<YOUR_DROPBOX_TOKEN>"
   DROPBOX_NAME="$(get_filename "$LOCAL_NAME")"
   DOWNLOAD_URL="$(get_url "$LOCAL_NAME")"
   RANDOM_ID=$(uuidgen | cut -c1-8)
@@ -127,10 +127,11 @@ for LOCAL_NAME in "${FILES_KEYS[@]}"; do
   {
     curl -s -L -o "$LOCAL_NAME" "$DOWNLOAD_URL"
   } & spinner "Downloading $DROPBOX_NAME..."
+  wait
   end=$(date +%s.%N)
   download=$(awk -v start="$start" -v end="$end" 'BEGIN {printf "%.2f", end - start}')
-  start=$(date +%s.%N)
 
+  start=$(date +%s.%N)
   {
     curl -s -X POST https://content.dropboxapi.com/2/files/upload \
       --header "Authorization: Bearer $ACCESS_TOKEN" \
@@ -138,7 +139,7 @@ for LOCAL_NAME in "${FILES_KEYS[@]}"; do
       --header "Content-Type: application/octet-stream" \
       --data-binary @"$LOCAL_NAME" > /dev/null
   } & spinner "Uploading $DROPBOX_NAME..."
-
+  wait
   end=$(date +%s.%N)
   upload=$(awk -v start="$start" -v end="$end" 'BEGIN {printf "%.2f", end - start}')
 
@@ -148,20 +149,16 @@ for LOCAL_NAME in "${FILES_KEYS[@]}"; do
       --header "Content-Type: application/json" \
       --data "{\"path\": \"/$UNIQUE_DROPBOX_NAME\"}" > /dev/null
   } & spinner "Deleting $DROPBOX_NAME from Dropbox..."
-
+  wait
   rm -f "$LOCAL_NAME"
 
   if [[ "$DROPBOX_NAME" == "Test File.txt" ]]; then
     txt_download="$download"
     txt_upload="$upload"
-  fi
-
-  if [[ "$DROPBOX_NAME" == "Test Video.mp4" ]]; then
+  elif [[ "$DROPBOX_NAME" == "Test Video.mp4" ]]; then
     vid_download="$download"
     vid_upload="$upload"
-  fi
-
-  if [[ "$DROPBOX_NAME" == "Test Image.jpg" ]]; then
+  elif [[ "$DROPBOX_NAME" == "Test Image.jpg" ]]; then
     img_download="$download"
     img_upload="$upload"
   fi
@@ -187,10 +184,8 @@ read -p "> Any notes? Leave blank if nothing: " notes
 read -p "> Distance to router in meters (estimated): " distance
 echo "----------------------------------------------------------------------"
 
-{
-  wifi_name=$(system_profiler SPAirPortDataType 2>/dev/null | awk '/Current Network Information:/ {getline; gsub(":", "", $1); print $1; exit}')
-  laptop_owner=$(scutil --get ComputerName)
-} & spinner "Gathering device info..."
+wifi_name=$(system_profiler SPAirPortDataType 2>/dev/null | awk '/Current Network Information:/ {getline; gsub(":", "", $1); print $1; exit}')
+laptop_owner=$(scutil --get ComputerName)
 
 {
   curl -s -X POST https://docs.google.com/forms/d/e/1FAIpQLSdJqVtrNwXMySfBWkkWBK13TH9qMH_hhS0VqcmivjTj9k64ZQ/formResponse \
@@ -208,6 +203,5 @@ echo "----------------------------------------------------------------------"
     -d "entry.489745409=$vid_download" \
     -d "entry.1329736496=$vid_upload" \
     -d "entry.1500120204=$notes" > /dev/null
-} & spinner "Submitting data to Spreadsheet..."
-
+} & spinner "Submitting results to Spreadsheet..."
 echo "----------------------------------------------------------------------"
