@@ -24,21 +24,14 @@ spinner() {
 }
 
 check_for_update_and_apply() {
-  {
-    latest_version=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" | jq -r '.tag_name')
-  } & spinner "Checking for updates..."
+  echo "🔍 Checking for updates..."
 
-  if [[ -z "$latest_version" || "$latest_version" == "null" ]]; then
-    echo "❌ Failed to fetch latest version from GitHub."
-    return
-  fi
-
-  # Normalize version format to ensure match
-  normalized_latest_version="v$latest_version"
+  latest_version=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" | jq -r '.tag_name')
   
-  if [[ "$normalized_latest_version" != "$SCRIPT_VERSION" ]]; then
-    echo "📢 Update available: $normalized_latest_version (current: $SCRIPT_VERSION)"
+  if [[ "$latest_version" != "$SCRIPT_VERSION" && "$latest_version" != "null" ]]; then
+    echo "📢 Update available: $latest_version (current: $SCRIPT_VERSION)"
     
+    # Get download URL of the new release asset
     download_url=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest" \
       | jq -r ".assets[] | select(.name == \"$SCRIPT_NAME\") | .browser_download_url")
     
@@ -47,14 +40,13 @@ check_for_update_and_apply() {
       return
     fi
 
-    {
-      curl -sL "$download_url" -o "$0.tmp"
-    } & spinner "Downloading update..."
+    echo "⬇️ Downloading new version..."
+    curl -sL "$download_url" -o "$0.tmp"
 
     if [[ -s "$0.tmp" ]]; then
       mv "$0.tmp" "$0"
       chmod +x "$0"
-      echo "✅ Updated to $normalized_latest_version. Please re-run the script."
+      echo "✅ Updated to $latest_version. Please re-run the script."
       exit 0
     else
       echo "❌ Download failed or empty file."
