@@ -1,5 +1,5 @@
 # asd-speedtest
-Speedtest Script for ASD Network
+Speedtest Script for ASD Network (or any network!)
 
 ## Installation
 1. Click on releases on the right
@@ -9,7 +9,8 @@ Speedtest Script for ASD Network
 5. Run ```cd Downloads/ASD_Speedtest``` (if it is downloaded in your "Downloads" directory, otherwise cd is used to change directories, so to change directory to download you do cd Download, for documents cd Documents)
 6. Simply run the command ```bash speedtest.sh```
 7. Head to usage if you want to understand how to gather distance
-   
+
+
 ## Usage
 Run the command with:
 ```
