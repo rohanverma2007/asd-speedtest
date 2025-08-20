@@ -187,21 +187,25 @@ echo "----------------------------------------------------------------------"
 wifi_name=$(system_profiler SPAirPortDataType 2>/dev/null | awk '/Current Network Information:/ {getline; gsub(":", "", $1); print $1; exit}')
 laptop_owner=$(scutil --get ComputerName)
 
-{
-  curl -s -X POST https://docs.google.com/forms/d/e/1FAIpQLSdJqVtrNwXMySfBWkkWBK13TH9qMH_hhS0VqcmivjTj9k64ZQ/formResponse \
-    -d "entry.366340186=$laptop_owner" \
-    -d "entry.163968548=$wifi_name" \
-    -d "entry.1417593520=$location" \
-    -d "entry.1988809452=$distance" \
-    -d "entry.920602030=$download_mbps" \
-    -d "entry.1199007316=$upload_mbps" \
-    -d "entry.1831664958=$idle_latency" \
-    -d "entry.332463093=$txt_download" \
-    -d "entry.261161766=$txt_upload" \
-    -d "entry.1579796133=$img_download" \
-    -d "entry.911938217=$img_upload" \
-    -d "entry.489745409=$vid_download" \
-    -d "entry.1329736496=$vid_upload" \
-    -d "entry.1500120204=$notes" > /dev/null
-} & spinner "Submitting results to Spreadsheet..."
+if [[ "$wifi_name" == "ASD" ]]; then
+        {
+          curl -s -X POST https://docs.google.com/forms/d/e/1FAIpQLSdJqVtrNwXMySfBWkkWBK13TH9qMH_hhS0VqcmivjTj9k64ZQ/formResponse \
+            -d "entry.366340186=$laptop_owner" \
+            -d "entry.163968548=$wifi_name" \
+            -d "entry.1417593520=$location" \
+            -d "entry.1988809452=$distance" \
+            -d "entry.920602030=$download_mbps" \
+            -d "entry.1199007316=$upload_mbps" \
+            -d "entry.1831664958=$idle_latency" \
+            -d "entry.332463093=$txt_download" \
+            -d "entry.261161766=$txt_upload" \
+            -d "entry.1579796133=$img_download" \
+            -d "entry.911938217=$img_upload" \
+            -d "entry.489745409=$vid_download" \
+            -d "entry.1329736496=$vid_upload" \
+            -d "entry.1500120204=$notes" > /dev/null
+        } & spinner "Submitting results to Spreadsheet..."
 echo "----------------------------------------------------------------------"
+elif [[ "$wifi_name" != "ASD" ]]; then
+        exit
+fi
