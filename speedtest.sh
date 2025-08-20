@@ -187,9 +187,14 @@ echo "----------------------------------------------------------------------"
 wifi_name=$(system_profiler SPAirPortDataType 2>/dev/null | awk '/Current Network Information:/ {getline; gsub(":", "", $1); print $1; exit}')
 laptop_owner=$(scutil --get ComputerName)
 
+time=$(date +%H)
+date=$(date +%D)
+
 if [[ "$wifi_name" == "ASD" ]]; then
         {
           curl -s -X POST https://docs.google.com/forms/d/e/1FAIpQLSdJqVtrNwXMySfBWkkWBK13TH9qMH_hhS0VqcmivjTj9k64ZQ/formResponse \
+                -d "entry.1210519646=$date" \
+                -d "entry.1074783699=$time" \
             -d "entry.366340186=$laptop_owner" \
             -d "entry.163968548=$wifi_name" \
             -d "entry.1417593520=$location" \
