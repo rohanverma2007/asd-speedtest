@@ -1,7 +1,7 @@
 #!/bin/bash
 # Rohan Verma
 
-SCRIPT_VERSION="v1.3.3"
+SCRIPT_VERSION="v1.3.4"
 GITHUB_REPO="rohanverma2007/asd-speedtest"
 SCRIPT_NAME="speedtest.sh"
 
